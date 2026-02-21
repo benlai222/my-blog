@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <rss version="2.0">
+    <channel>
+      <title>我的部落格</title>
+      <link>https://my-blog.example.com</link>
+      <description>分享最新的技術文章與生活點滴。</description>
+      <language>zh-TW</language>
+      
+      <item>
+        <title><![CDATA[我的第一篇文章]]></title>
+        <link>https://my-blog.example.com/blog/hello-world</link>
+        <guid>https://my-blog.example.com/blog/hello-world</guid>
+        <pubDate>Fri, 20 Feb 2026 00:00:00 GMT</pubDate>
+        <description><![CDATA[這是我在這個 Next.js 專案建立的第一篇文章，用來測試 Markdown 解析與渲染。]]></description>
+      </item>
+      
+      <item>
+        <title><![CDATA[2026 娛樂城老虎機必勝攻略：揭秘 SLOT 中大獎的 3 個核心演算法與選台技巧]]></title>
+        <link>https://my-blog.example.com/blog/2026-slot-machine-strategy</link>
+        <guid>https://my-blog.example.com/blog/2026-slot-machine-strategy</guid>
+        <pubDate>Fri, 20 Feb 2026 00:00:00 GMT</pubDate>
+        <description><![CDATA[想知道如何在電子老虎機贏錢？資深娛樂城創意總監為你拆解 SLOT 運作原理。從 RTP 回報率、波動率到獨家「吐錢期」判斷法，教你如何像專業玩家一樣在 FB、IG 熱門推薦中挑選高勝率機台！]]></description>
+      </item>
+      
+    </channel>
+  </rss>
