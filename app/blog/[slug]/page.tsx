@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import Link from 'next/link';
 import ScrollToTopButton from './ScrollToTopButton';
+import Comments from '@/components/Comments';
 
 export function generateStaticParams() {
     const posts = getSortedPostsData();
@@ -73,7 +74,8 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                     </ReactMarkdown>
                 </div>
 
-                {/* 底部動態組件 */}
+                {/* 底部動態組件與留言板 */}
+                <Comments />
                 <ScrollToTopButton />
             </article>
         </main>
