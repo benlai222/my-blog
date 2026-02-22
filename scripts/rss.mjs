@@ -7,36 +7,36 @@ const postsDirectory = path.join(process.cwd(), 'posts');
 const publicDirectory = path.join(process.cwd(), 'public');
 
 async function generateRssFeed() {
-    // 檢查 posts 資料夾是否存在
-    if (!fs.existsSync(postsDirectory)) {
-        console.warn('Posts directory not found. Skipping RSS generation.');
-        return;
-    }
+  // 檢查 posts 資料夾是否存在
+  if (!fs.existsSync(postsDirectory)) {
+    console.warn('Posts directory not found. Skipping RSS generation.');
+    return;
+  }
 
-    const fileNames = fs.readdirSync(postsDirectory);
-    const posts = fileNames
-        .filter((fileName) => fileName.endsWith('.md'))
-        .map((fileName) => {
-            const slug = fileName.replace(/\.md$/, '');
-            const fullPath = path.join(postsDirectory, fileName);
-            const fileContents = fs.readFileSync(fullPath, 'utf8');
-            const { data } = matter(fileContents);
+  const fileNames = fs.readdirSync(postsDirectory);
+  const posts = fileNames
+    .filter((fileName) => fileName.endsWith('.md'))
+    .map((fileName) => {
+      const slug = fileName.replace(/\.md$/, '');
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data } = matter(fileContents);
 
-            return {
-                slug,
-                title: data.title || '無標題',
-                date: data.date || new Date().toISOString(),
-                description: data.description || '',
-            };
-        })
-        .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1));
+      return {
+        slug,
+        title: data.title || '無標題',
+        date: data.date || new Date().toISOString(),
+        description: data.description || '',
+      };
+    })
+    .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1));
 
-    // 替換換成您真實的網站網址
-    const siteUrl = 'https://my-blog.example.com';
+  // 替換換成您真實的網站網址
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://my-blog-domain.com';
 
-    const rssItemsXml = posts
-        .map((post) => {
-            return `
+  const rssItemsXml = posts
+    .map((post) => {
+      return `
       <item>
         <title><![CDATA[${post.title}]]></title>
         <link>${siteUrl}/blog/${post.slug}</link>
@@ -45,10 +45,10 @@ async function generateRssFeed() {
         <description><![CDATA[${post.description}]]></description>
       </item>
       `;
-        })
-        .join('');
+    })
+    .join('');
 
-    const rssFeedXml = `<?xml version="1.0" encoding="UTF-8" ?>
+  const rssFeedXml = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
     <channel>
       <title>我的部落格</title>
@@ -59,14 +59,14 @@ async function generateRssFeed() {
     </channel>
   </rss>`;
 
-    // 確保 public 目錄存在
-    if (!fs.existsSync(publicDirectory)) {
-        fs.mkdirSync(publicDirectory, { recursive: true });
-    }
+  // 確保 public 目錄存在
+  if (!fs.existsSync(publicDirectory)) {
+    fs.mkdirSync(publicDirectory, { recursive: true });
+  }
 
-    // 寫入 feed.xml
-    fs.writeFileSync(path.join(publicDirectory, 'feed.xml'), rssFeedXml);
-    console.log('✅ RSS feed generated successfully!');
+  // 寫入 feed.xml
+  fs.writeFileSync(path.join(publicDirectory, 'feed.xml'), rssFeedXml);
+  console.log('✅ RSS feed generated successfully!');
 }
 
 generateRssFeed();
