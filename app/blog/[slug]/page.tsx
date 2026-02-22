@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getPostData, getSortedPostsData } from '@/lib/posts';
+import { getPostData, getSortedPostsData, getPostNavigation } from '@/lib/posts';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
@@ -8,6 +8,7 @@ import Script from 'next/script';
 import ScrollToTopButton from './ScrollToTopButton';
 import Comments from '@/components/Comments';
 import TableOfContents from '@/components/TableOfContents';
+import PostNavigation from '@/components/PostNavigation';
 
 export function generateStaticParams() {
     const posts = getSortedPostsData();
@@ -26,6 +27,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
     const postData = getPostData(params.slug);
+    const { prevPost, nextPost } = getPostNavigation(params.slug);
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://my-blog-domain.com';
     const postUrl = `${siteUrl}/blog/${params.slug}`;
 
@@ -115,6 +117,9 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                             {postData.content}
                         </ReactMarkdown>
                     </div>
+
+                    {/* 上一篇 / 下一篇 導覽 */}
+                    <PostNavigation prevPost={prevPost} nextPost={nextPost} />
 
                     {/* 底部動態組件與留言板 */}
                     <Comments />

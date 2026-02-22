@@ -57,3 +57,32 @@ export function getPostData(slug: string) {
         ...(matterResult.data as { title: string; date: string; description: string }),
     };
 }
+
+/**
+ * 取得與目前文章相鄰的「上一篇」與「下一篇」文章資訊
+ * @param currentSlug 目前文章的 slug
+ */
+export function getPostNavigation(currentSlug: string) {
+    const allPosts = getSortedPostsData();
+    const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
+
+    if (currentIndex === -1) {
+        return { prevPost: null, nextPost: null };
+    }
+
+    // 因為 getSortedPostsData 是依日期遞減排序 (新 -> 舊)
+    // 所以下一篇文章 (Next) 應該是時間較舊的文章 (Index + 1)
+    // 上一篇文章 (Prev) 應該是時間較新的文章 (Index - 1)
+
+    const prevPost = currentIndex > 0 ? {
+        title: allPosts[currentIndex - 1].title,
+        slug: allPosts[currentIndex - 1].slug,
+    } : null;
+
+    const nextPost = currentIndex < allPosts.length - 1 ? {
+        title: allPosts[currentIndex + 1].title,
+        slug: allPosts[currentIndex + 1].slug,
+    } : null;
+
+    return { prevPost, nextPost };
+}
